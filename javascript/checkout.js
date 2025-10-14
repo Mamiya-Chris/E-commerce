@@ -128,11 +128,11 @@
       if ($modalEl.length && typeof bootstrap !== 'undefined'){
         var bs = bootstrap.Modal.getOrCreateInstance($modalEl[0]);
         bs.show();
-        setTimeout(function(){ try{ bs.hide(); }catch(e){}; window.location.href = 'bootstrap.html'; }, 1800);
+        setTimeout(function(){ try{ bs.hide(); }catch(e){}; window.location.href = 'index.php'; }, 1800);
       } else if (window.Toast && window.Toast.show) {
         window.Toast.show('Order placed successfully (demo).');
-        setTimeout(function(){ window.location.href = 'bootstrap.html'; }, 1200);
-      } else try{ alert('Order placed successfully (demo).'); window.location.href = 'bootstrap.html'; }catch(e){ window.location.href='bootstrap.html'; }
+        setTimeout(function(){ window.location.href = 'index.php'; }, 1200);
+      } else try{ alert('Order placed successfully (demo).'); window.location.href = 'index.php'; }catch(e){ window.location.href='index.php'; }
     }).fail(function(){
       // fallback: save to localStorage orders
       var orders = JSON.parse(localStorage.getItem('nethshop_orders')||'[]');
@@ -145,11 +145,11 @@
         var bs = bootstrap.Modal.getOrCreateInstance($modalEl[0]);
         $('#orderSuccessMessage').text('Order saved locally.');
         bs.show();
-        setTimeout(function(){ try{ bs.hide(); }catch(e){}; window.location.href = 'bootstrap.html'; }, 1800);
+        setTimeout(function(){ try{ bs.hide(); }catch(e){}; window.location.href = 'index.php'; }, 1800);
       } else if (window.Toast && window.Toast.show) {
         window.Toast.show('Order saved locally (no server).');
-        setTimeout(function(){ window.location.href = 'bootstrap.html'; }, 1200);
-      } else try{ alert('Order saved locally (no server).'); window.location.href = 'bootstrap.html'; }catch(e){ window.location.href='bootstrap.html'; }
+        setTimeout(function(){ window.location.href = 'index.php'; }, 1200);
+      } else try{ alert('Order saved locally (no server).'); window.location.href = 'index.php'; }catch(e){ window.location.href='index.php'; }
     });
   }
 

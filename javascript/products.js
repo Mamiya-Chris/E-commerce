@@ -68,7 +68,7 @@
         } 
       } catch(e){}
       // determine checkout path relative to current page
-      var checkoutPath = (location.pathname.indexOf('/products/') !== -1) ? '../checkout.html' : 'checkout.html';
+      var checkoutPath = (location.pathname.indexOf('/products/') !== -1) ? '../checkout.php' : 'checkout.php';
       window.location.href = checkoutPath;
     });
   }
@@ -134,7 +134,7 @@
                 localStorage.setItem('nethshop_cart_v1', JSON.stringify(cart)); 
               } 
             } catch(e){}
-            var checkoutPath = (location.pathname.indexOf('/products/') !== -1) ? '../checkout.html' : 'checkout.html';
+            var checkoutPath = (location.pathname.indexOf('/products/') !== -1) ? '../checkout.php' : 'checkout.php';
             window.location.href = checkoutPath;
           });
         }
@@ -185,7 +185,7 @@
                 localStorage.setItem('nethshop_cart_v1', JSON.stringify(cart)); 
               } 
             } catch(e){}
-            var checkoutPath = (location.pathname.indexOf('/products/') !== -1) ? '../checkout.html' : 'checkout.html';
+            var checkoutPath = (location.pathname.indexOf('/products/') !== -1) ? '../checkout.php' : 'checkout.php';
             window.location.href = checkoutPath;
           });
         }

@@ -9,18 +9,7 @@
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="bootstrap.html">NETH SHOP</a>
-      <div class="collapse navbar-collapse">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="bootstrap.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="bootstrap.html">Products</a></li>
-          <li class="nav-item"><a class="nav-link active" href="cart.html">🛒 Cart</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <?php include 'header.php'; ?>
 
   <!-- Cart content -->
   <main class="container py-5 content-with-footer">
@@ -33,13 +22,12 @@
             <h4 class="card-title">Shopping Cart</h4>
             <p class="text-muted">Review your items.</p>
 
-
             <div id="cartItems" class="list-group">
               <!-- cart items render here by javascript -->
             </div>
 
             <div class="d-flex justify-content-start align-items-center mt-4">
-              <a id="continueShoppingBtn" href="bootstrap.html" class="btn btn-sm btn-outline-secondary btn-continue">← Continue shopping</a>
+              <a id="continueShoppingBtn" href="index.php" class="btn btn-sm btn-outline-secondary btn-continue">← Continue shopping</a>
             </div>
 
           </div>
@@ -68,7 +56,7 @@
               <strong id="cartTotal" class="h5">₱0</strong>
             </div>
 
-            <a id="checkoutSummaryBtn" href="checkout.html" class="btn btn-success w-100">Checkout</a>
+            <a id="checkoutSummaryBtn" href="checkout.php" class="btn btn-success w-100">Checkout</a>
           </div>
         </div>
       </div>
@@ -76,9 +64,7 @@
     </div>
   </main>
 
-  <footer class="bg-dark text-white text-center py-3 fixed-bottom">
-    <p class="mb-0">© 2025 NETH SHOP</p>
-  </footer>
+  <?php include 'footer.php'; ?>
 
   <!-- Bootstrap JS (for possible modal/tooltips) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -105,3 +91,5 @@
 
 </body>
 </html>
+
+

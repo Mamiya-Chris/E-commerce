@@ -8,18 +8,7 @@
     </head>
     <body>
 
-        <!-- Simple navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">NETH SHOP</a>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="bootstrap.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="cart.html">Cart</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <?php include 'header.php'; ?>
 
     <main class="container py-5 content-with-footer">
             <h2 class="mb-4">Checkout</h2>
@@ -109,15 +98,13 @@
                     <div class="d-grid">
                         <button id="placeOrderBtn" class="btn btn-success btn-lg">Place order</button>
                     </div>
-                    <div class="mt-2 text-center"><a href="bootstrap.html" class="btn btn-link">Continue shopping</a></div>
+                    <div class="mt-2 text-center"><a href="index.php" class="btn btn-link">Continue shopping</a></div>
                 </div>
             </div>
 
         </main>
 
-                <footer class="bg-dark text-white text-center py-3 fixed-bottom">
-                        <p class="mb-0">© 2025 NETH SHOP</p>
-                </footer>
+        <?php include 'footer.php'; ?>
 
                 <!-- Bootstrap JS for modal support -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -142,4 +129,6 @@
 
                 <script src="./javascript/checkout.js"></script>
         </body>
-</html>
+        </html>
+
+
