@@ -79,9 +79,22 @@
       errorClass: 'invalid-feedback',
       validClass: 'is-valid',
       errorPlacement: function(error, element) {
-        error.addClass('invalid-feedback');
+        error.addClass('invalid-feedback d-block');
         element.addClass('is-invalid');
-        element.after(error);
+        // Prefer appending to the nearest field wrapper to avoid collapsing inputs
+        var $wrapper = element.closest('.mb-3, .col-md-6, .form-group');
+        if ($wrapper.length) {
+          $wrapper.append(error);
+        } else {
+          var $group = element.closest('.input-group');
+          if ($group.length) $group.after(error); else element.after(error);
+        }
+      },
+      highlight: function(element){
+        $(element).addClass('is-invalid').removeClass('is-valid');
+      },
+      unhighlight: function(element){
+        $(element).removeClass('is-invalid').addClass('is-valid');
       },
       success: function(label, element) {
         $(element).removeClass('is-invalid').addClass('is-valid');
@@ -221,9 +234,22 @@
       errorClass: 'invalid-feedback',
       validClass: 'is-valid',
       errorPlacement: function(error, element) {
-        error.addClass('invalid-feedback');
+        error.addClass('invalid-feedback d-block');
         element.addClass('is-invalid');
-        element.after(error);
+        // Prefer appending to the nearest field wrapper to keep layout intact
+        var $wrapper = element.closest('.mb-3, .col-md-6, .form-group');
+        if ($wrapper.length) {
+          $wrapper.append(error);
+        } else {
+          var $group = element.closest('.input-group');
+          if ($group.length) $group.after(error); else element.after(error);
+        }
+      },
+      highlight: function(element){
+        $(element).addClass('is-invalid').removeClass('is-valid');
+      },
+      unhighlight: function(element){
+        $(element).removeClass('is-invalid').addClass('is-valid');
       },
       success: function(label, element) {
         $(element).removeClass('is-invalid').addClass('is-valid');
