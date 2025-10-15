@@ -106,7 +106,7 @@
 
         // AJAX login
         $.ajax({
-          url: '/api/login',
+          url: '/api/login.php',
           method: 'POST',
           contentType: 'application/json',
           data: JSON.stringify({ username: username, password: password })
@@ -266,11 +266,11 @@
         var fullName = firstName + (lastName ? (' ' + lastName) : '');
         var payload = { firstName: firstName, lastName: lastName, fullName: fullName, address: address, email: email, contact: contact, password: password };
 
-        $.ajax({ url: '/api/signup', method: 'POST', contentType: 'application/json', data: JSON.stringify(payload) })
+        $.ajax({ url: '/api/signup.php', method: 'POST', contentType: 'application/json', data: JSON.stringify(payload) })
           .done(function(json){
             try{ var bs = bootstrap.Modal.getInstance($signupModal[0]); if (bs) bs.hide(); }catch(e){}
             // attempt auto-login
-            $.ajax({ url: '/api/login', method: 'POST', contentType: 'application/json', data: JSON.stringify({ email: email, password: password }) })
+            $.ajax({ url: '/api/login.php', method: 'POST', contentType: 'application/json', data: JSON.stringify({ email: email, password: password }) })
               .done(function(loginJson){
                 try{
                   var session = { ts: Date.now() };
