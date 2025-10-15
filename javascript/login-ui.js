@@ -58,7 +58,7 @@
       rules: {
         username: {
           required: true,
-          minlength: 3
+          email: true
         },
         password: {
           required: true,
@@ -67,8 +67,8 @@
       },
       messages: {
         username: {
-          required: "Please enter your username",
-          minlength: "Username must be at least 3 characters"
+          required: "Please enter your email",
+          email: "Please enter a valid email address"
         },
         password: {
           required: "Please enter your password",
@@ -101,31 +101,26 @@
         label.remove();
       },
       submitHandler: function(form) {
-        var username = $.trim($form.find('[name="username"]').val() || '');
+        var email = $.trim($form.find('[name="username"]').val() || '');
         var password = $form.find('[name="password"]').val() || '';
 
         // AJAX login
         $.ajax({
-          url: '/api/login.php',
+          url: 'api/login.php',
           method: 'POST',
           contentType: 'application/json',
-          data: JSON.stringify({ username: username, password: password })
+          data: JSON.stringify({ email: email, password: password })
         }).done(function(json){
           // success
           var modal = $loginModal[0];
           try{ var bs = bootstrap.Modal.getInstance(modal); if (bs) bs.hide(); }catch(e){}
-          try { localStorage.setItem('nethshop_session', JSON.stringify({ username: username, ts: Date.now() })); } catch(e){}
+          try { localStorage.setItem('nethshop_session', JSON.stringify({ user: json.user, ts: Date.now() })); } catch(e){}
           showSuccessModalAndRedirect('loginSuccessModal');
           $form[0].reset();
           $form.find('.is-valid').removeClass('is-valid');
         }).fail(function(xhr){
-          // fallback demo success
-          console.warn('Login request failed, falling back to demo', xhr);
-          try{ var bs = bootstrap.Modal.getInstance($loginModal[0]); if (bs) bs.hide(); }catch(e){}
-          try { localStorage.setItem('nethshop_session', JSON.stringify({ username: username, ts: Date.now(), demo: true })); } catch(e){}
-          showSuccessModalAndRedirect('loginSuccessModal');
-          $form[0].reset();
-          $form.find('.is-valid').removeClass('is-valid');
+          console.error('Login failed', xhr);
+          alert('Login failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : 'Server error'));
         });
         return false; // Prevent default form submission
       }
@@ -266,11 +261,11 @@
         var fullName = firstName + (lastName ? (' ' + lastName) : '');
         var payload = { firstName: firstName, lastName: lastName, fullName: fullName, address: address, email: email, contact: contact, password: password };
 
-        $.ajax({ url: '/api/signup.php', method: 'POST', contentType: 'application/json', data: JSON.stringify(payload) })
+        $.ajax({ url: 'api/signup.php', method: 'POST', contentType: 'application/json', data: JSON.stringify(payload) })
           .done(function(json){
             try{ var bs = bootstrap.Modal.getInstance($signupModal[0]); if (bs) bs.hide(); }catch(e){}
             // attempt auto-login
-            $.ajax({ url: '/api/login.php', method: 'POST', contentType: 'application/json', data: JSON.stringify({ email: email, password: password }) })
+            $.ajax({ url: 'api/login.php', method: 'POST', contentType: 'application/json', data: JSON.stringify({ email: email, password: password }) })
               .done(function(loginJson){
                 try{
                   var session = { ts: Date.now() };
@@ -281,18 +276,13 @@
                 showSuccessModalAndRedirect('signupSuccessModal');
                 $sform[0].reset();
                 $sform.find('.is-valid').removeClass('is-valid');
-              }).fail(function(){ showSuccessModalAndRedirect('signupSuccessModal'); $sform[0].reset(); $sform.find('.is-valid').removeClass('is-valid'); });
+              }).fail(function(xhr){
+                console.error('Auto-login after signup failed', xhr);
+                alert('Account created, but auto-login failed. Please login manually.');
+              });
           }).fail(function(err){
-            console.warn('Signup request failed, using demo fallback', err);
-            try{ var bs = bootstrap.Modal.getInstance($signupModal[0]); if (bs) bs.hide(); }catch(e){}
-            try{
-              var demoAcc = { firstName: firstName, lastName: lastName, fullName: fullName, email: email, contact: contact };
-              localStorage.setItem('nethshop_demo_account', JSON.stringify(demoAcc));
-              localStorage.setItem('nethshop_session', JSON.stringify({ demo: true, user: demoAcc, ts: Date.now() }));
-              showSuccessModalAndRedirect('signupSuccessModal');
-            }catch(e){}
-            $sform[0].reset();
-            $sform.find('.is-valid').removeClass('is-valid');
+            console.error('Signup failed', err);
+            alert('Signup failed: ' + (err.responseJSON && err.responseJSON.error ? err.responseJSON.error : 'Server error'));
           });
         return false; // Prevent default form submission
       }
