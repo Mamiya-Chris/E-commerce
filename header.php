@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></li>
+        <li class="nav-item"><a class="nav-link" href="contactus.php">Contact Us</a></li>
         <li class="nav-item"><a class="nav-link" href="cart.php">🛒 Cart</a></li>
         <?php if (!empty($_SESSION['authenticated']) && !empty($_SESSION['user'])): ?>
           <li class="nav-item d-flex align-items-center me-2">
