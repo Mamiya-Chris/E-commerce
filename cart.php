@@ -1,3 +1,10 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+if (empty($_SESSION['authenticated']) || empty($_SESSION['user'])) {
+  header('Location: index.php?loginRequired=1');
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -5,7 +5,7 @@
   // helper: safely get jQuery and return early if missing
   if (typeof $ === 'undefined') return;
 
-  // Helper: show a Bootstrap success modal briefly then hide and reload
+  
   function showSuccessModalAndRedirect(elOrId){
     var $successEl = (typeof elOrId === 'string') ? $('#' + elOrId) : $(elOrId);
     if (!$successEl || !$successEl.length) return;

@@ -413,6 +413,25 @@
 <script src="./javascript/cart.js"></script>
 <script src="./javascript/products.js"></script>
 <script src="./javascript/login-ui.js"></script>
+<script>
+  (function(){
+    try {
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('loginRequired') === '1') {
+        // open login modal
+        var modalEl = document.getElementById('loginModal');
+        if (modalEl && window.bootstrap) {
+          var modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.show();
+        }
+        // clean the query param without reloading
+        params.delete('loginRequired');
+        var newUrl = window.location.pathname + (params.toString() ? ('?' + params.toString()) : '') + window.location.hash;
+        window.history.replaceState({}, '', newUrl);
+      }
+    } catch(e) {}
+  })();
+</script>
 
 
 
