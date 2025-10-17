@@ -26,18 +26,38 @@
   <section class="py-5">
     <div class="container">
       <h2 class="text-center mb-4">Featured Products</h2>
+      <?php
+        require_once __DIR__ . '/api/db.php';
+        try {
+          $pdo = get_pdo();
+          $stmt = $pdo->query('SELECT product_id, product_name, description, price, image_path FROM products ORDER BY date_added DESC');
+          $products = $stmt->fetchAll();
+        } catch (Throwable $e) {
+          $products = [];
+        }
+      ?>
       <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="./products/product-chair.html"><img src="https://luxestylefurniture.b-cdn.net/wp-content/uploads/2020/04/princess-chair-12.jpg" class="card-img-top" alt="Product 1"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="./products/product-chair.html" class="text-decoration-none text-dark">Elegant Chair</a></h5>
-              <p class="card-text">₱1599</p>
-              <a href="./products/product-chair.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="product-chair">Add to Cart</a>
+        <?php if (!empty($products)): ?>
+          <?php foreach ($products as $p): ?>
+            <div class="col-md-4">
+              <div class="card h-100">
+                <?php $img = !empty($p['image_path']) ? htmlspecialchars($p['image_path']) : ''; ?>
+                <a href="#"><img src="<?php echo $img; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($p['product_name']); ?>"></a>
+                <div class="card-body">
+                  <h5 class="card-title"><a href="#" class="text-decoration-none text-dark"><?php echo htmlspecialchars($p['product_name']); ?></a></h5>
+                  <p class="card-text">₱<?php echo number_format((float)$p['price'], 0, '.', ','); ?></p>
+                  <a href="#" class="btn btn-outline-secondary w-100 mb-2">View</a>
+                  <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="<?php echo (int)$p['product_id']; ?>">Add to Cart</a>
+                </div>
+              </div>
             </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <div class="col-12">
+            <div class="alert alert-info">No products available.</div>
           </div>
-        </div>
+        <?php endif; ?>
+      </div>
         <!-- LOGIN SUCCESS MODAL -->
         <div class="modal fade" id="loginSuccessModal" tabindex="-1" aria-labelledby="loginSuccessModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered">
@@ -72,164 +92,6 @@
                 </div>
               </div>
             </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="./products/product-lamp.html"><img src="https://m.media-amazon.com/images/I/614-174yhNL.jpg" class="card-img-top" alt="Product 2"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="./products/product-lamp.html" class="text-decoration-none text-dark">Smart Lamp</a></h5>
-              <p class="card-text">₱599</p>
-              <a href="./products/product-lamp.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="product-lamp">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="./products/product-desk.html"><img src="https://images-na.ssl-images-amazon.com/images/I/71ARqBJvP2L.jpg" class="card-img-top" alt="Product 3"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="./products/product-desk.html" class="text-decoration-none text-dark">Modern Desk</a></h5>
-              <p class="card-text">₱1699</p>
-              <a href="./products/product-desk.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="product-desk">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-17.html"><img src="https://mac-center.com/cdn/shop/files/IMG-18067790_m_jpeg_1.jpg?v=1757469315&width=823" class="card-img-top" alt="iPhone 17"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-17.html" class="text-decoration-none text-dark">iPhone 17</a></h5>
-              <p class="card-text">₱59,999</p>
-              <a href="products/iphone-17.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-17">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-17-pro.html"><img src="https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MGFE4?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=SU45U0x1Zzd6NlVGYWYvUXhvNEtzZ2tuVHYzMERCZURia3c5SzJFOTlPaGdZcXdkeU9XZTMrVDRCWlZ6enByUHlhcTd5b0ljRE5iZzJrb0NudTJaMmc" class="card-img-top" alt="iPhone 17 Pro"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-17-pro.html" class="text-decoration-none text-dark">iPhone 17 Pro</a></h5>
-              <p class="card-text">₱69,999</p>
-              <a href="products/iphone-17-pro.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-17-pro">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-17-pro-max.html"><img src="https://www.mobileana.com/wp-content/uploads/2025/06/Apple-iPhone-17-Pro-Max-Cosmic-Orange.webp" class="card-img-top" alt="iPhone 17 Pro Max"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-17-pro-max.html" class="text-decoration-none text-dark">iPhone 17 Pro Max</a></h5>
-              <p class="card-text">₱79,999</p>
-              <a href="products/iphone-17-pro-max.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-17-pro-max">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-17-air.html"><img src="https://external-preview.redd.it/iphone-17-air-could-be-available-in-4-new-color-options-v0-zEiC39zCXnUTXjppWKfX4DxXRnwsbFOgZcHSdW4UepI.jpeg?width=1080&crop=smart&auto=webp&s=123b768744d824e2a09fd1f70f3a84f6ad01bcc2" class="card-img-top" alt="iPhone 17 Air"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-17-air.html" class="text-decoration-none text-dark">iPhone 17 Air</a></h5>
-              <p class="card-text">₱75,999</p>
-              <a href="products/iphone-17-air.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-17-air">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-16.html"><img src="https://powermaccenter.com/cdn/shop/files/iPhone_16_Ultramarine_PDP_Image_Position_1__en-WW_a8875719-4998-4212-841b-e33a7b589f26.jpg?v=1726235824" class="card-img-top" alt="iPhone 16"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-16.html" class="text-decoration-none text-dark">iPhone 16</a></h5>
-              <p class="card-text">₱59,999</p>
-              <a href="products/iphone-16.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-16">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-16-pro.html"><img src="https://i0.wp.com/www.icenter-iraq.com/wp-content/uploads/2024/09/iPhone_16_Pro_Desert_Titanium_PDP_Image_Position_1__en-ME-scaled.jpg" class="card-img-top" alt="iPhone 16 Pro"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-16-pro.html" class="text-decoration-none text-dark">iPhone 16 Pro</a></h5>
-              <p class="card-text">₱69,999</p>
-              <a href="products/iphone-16-pro.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-16-pro">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-16-pro-max.html"><img src="https://istore.ph/cdn/shop/files/iPhone_16_Pro_Max_Black_Titanium_PDP_Image_Position_1a_Black_Titanium_Color__ROSA-EN.jpg?v=1728460045" class="card-img-top" alt="iPhone 16 Pro Max"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-16-pro-max.html" class="text-decoration-none text-dark">iPhone 16 Pro Max</a></h5>
-              <p class="card-text">₱79,999</p>
-              <a href="products/iphone-16-pro-max.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-16-pro-max">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-15.html"><img src="https://m.media-amazon.com/images/I/71d7rfSl0wL.jpg" class="card-img-top" alt="iPhone 15"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-15.html" class="text-decoration-none text-dark">iPhone 15</a></h5>
-              <p class="card-text">₱49,999</p>
-              <a href="products/iphone-15.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-15">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-15-pro.html"><img src="https://www.smappliance.com/cdn/shop/files/10176925_69d90ab4-e32e-4451-84cd-e45c31becbf0.jpg?v=1730348965" class="card-img-top" alt="iPhone 15 Pro"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-15-pro.html" class="text-decoration-none text-dark">iPhone 15 Pro</a></h5>
-              <p class="card-text">₱59,999</p>
-              <a href="products/iphone-15-pro.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-15-pro">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/iphone-15-pro-max.html"><img src="https://www.imagineonline.store/cdn/shop/files/iPhone_15_Pro_Max_Blue_Titanium_PDP_Image_Position-1__en-IN.jpg?v=1694758834&width=1445" class="card-img-top" alt="iPhone 15 Pro Max"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/iphone-15-pro-max.html" class="text-decoration-none text-dark">iPhone 15 Pro Max</a></h5>
-              <p class="card-text">₱69,999</p>
-              <div class="card-actions mt-2">
-                <a href="products/iphone-15-pro-max.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-                <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="iphone-15-pro-max">Add to Cart</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/rk61-keyboard.html"><img src="https://ecommerce.datablitz.com.ph/cdn/shop/files/RK61_-1.jpg?v=1723028954" class="card-img-top" alt="RK61 Mechanical Keyboard"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/rk61-keyboard.html" class="text-decoration-none text-dark">RK61 Mechanical Keyboard</a></h5>
-              <p class="card-text">₱5,999</p>
-              <div class="card-actions mt-2">
-                <a href="products/rk61-keyboard.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-                <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="rk61-keyboard">Add to Cart</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card h-100">
-            <a href="products/logitech-g304.html"><img src="https://www.itech.ph/wp-content/uploads/2020/09/LOGITECH-G304-LIGHTSPEED-WIRELESS-GAMING-MOUSE-WHITE.png" class="card-img-top" alt="Logitech G304"></a>
-            <div class="card-body">
-              <h5 class="card-title"><a href="products/logitech-g304.html" class="text-decoration-none text-dark">Logitech G304 Lightspeed Wireless Gaming Mouse [White]</a></h5>
-              <p class="card-text">₱3,999</p>
-              <a href="products/logitech-g304.html" class="btn btn-outline-secondary w-100 mb-2">View</a>
-              <a href="#" class="btn btn-primary w-100 add-to-cart" data-product-id="logitech-g304">Add to Cart</a>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     

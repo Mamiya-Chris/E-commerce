@@ -14,12 +14,7 @@ $email = trim((string)($data['email'] ?? ''));
 $contact = trim((string)($data['contact'] ?? ''));
 $password = (string)($data['password'] ?? '');
 
-// Derive a username if none is provided (optional)
-$username = trim((string)($data['username'] ?? ''));
-if ($username === '' && $email !== '') {
-    $base = strstr($email, '@', true) ?: 'user';
-    $username = preg_replace('/[^a-z0-9_\-]/i', '', $base);
-}
+// No username field in schema; email is the unique identifier
 
 if ($first === '' || $last === '' || $email === '' || $password === '') {
     json_response(['error' => 'Missing required fields'], 422);
@@ -27,17 +22,16 @@ if ($first === '' || $last === '' || $email === '' || $password === '') {
 
 $pdo = get_pdo();
 
-// Uniqueness checks
-$exists = $pdo->prepare('SELECT 1 FROM users WHERE email = :email OR username = :username LIMIT 1');
-$exists->execute([':email' => $email, ':username' => $username]);
+// Enforce unique email
+$exists = $pdo->prepare('SELECT 1 FROM users WHERE email = :email LIMIT 1');
+$exists->execute([':email' => $email]);
 if ($exists->fetch()) {
-    json_response(['error' => 'Username or email already exists'], 409);
+    json_response(['error' => 'Email already exists'], 409);
 }
 
-$stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash, first_name, last_name, contact, address, role)
-VALUES (:u, :e, :p, :f, :l, :c, :a, :r)');
+$stmt = $pdo->prepare('INSERT INTO users (email, password_hash, first_name, last_name, contact, address, role)
+VALUES (:e, :p, :f, :l, :c, :a, :r)');
 $stmt->execute([
-    ':u' => $username,
     ':e' => $email,
     ':p' => password_hash($password, PASSWORD_DEFAULT),
     ':f' => $first,
@@ -49,6 +43,6 @@ $stmt->execute([
 
 $userId = $pdo->lastInsertId();
 
-json_response(['id' => (int)$userId, 'username' => $username, 'email' => $email]);
+json_response(['id' => (int)$userId, 'email' => $email]);
 
 

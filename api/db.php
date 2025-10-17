@@ -12,14 +12,40 @@ function get_pdo(){
     static $pdo = null;
     if ($pdo !== null) return $pdo;
     global $DB_HOST, $DB_PORT, $DB_NAME, $DB_USER, $DB_PASS;
-    $dsn = 'mysql:host=' . $DB_HOST . ';port=' . $DB_PORT . ';dbname=' . $DB_NAME . ';charset=utf8mb4';
+
+    $host = getenv('DB_HOST') ?: $DB_HOST;
+    $port = getenv('DB_PORT') ?: $DB_PORT;
+    $name = getenv('DB_NAME') ?: $DB_NAME;
+    $user = getenv('DB_USER') ?: $DB_USER;
+    $pass = getenv('DB_PASS');
+    if ($pass === false || $pass === null) $pass = $DB_PASS;
+
+    $dsn = 'mysql:host=' . $host . ';port=' . $port . ';dbname=' . $name . ';charset=utf8mb4';
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
     ];
-    $pdo = new PDO($dsn, $DB_USER, $DB_PASS, $options);
-    return $pdo;
+
+    // Try primary credentials
+    try {
+        $pdo = new PDO($dsn, $user, $pass, $options);
+        return $pdo;
+    } catch (Throwable $e) {
+        // Fallbacks for typical XAMPP setups: blank password and/or localhost
+        if ($user === 'root') {
+            try {
+                $pdo = new PDO($dsn, $user, '', $options);
+                return $pdo;
+            } catch (Throwable $e2) {
+                // try localhost host fallback
+                $dsn2 = 'mysql:host=localhost;port=' . $port . ';dbname=' . $name . ';charset=utf8mb4';
+                $pdo = new PDO($dsn2, $user, '', $options);
+                return $pdo;
+            }
+        }
+        throw $e;
+    }
 }
 
 function json_response($data, $status = 200){

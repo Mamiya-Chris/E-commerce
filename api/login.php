@@ -26,12 +26,12 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $pdo = get_pdo();
-$stmt = $pdo->prepare('SELECT id, username, email, password_hash, first_name, last_name, role FROM users WHERE email = :email LIMIT 1');
+$stmt = $pdo->prepare('SELECT id, email, password_hash, first_name, last_name, role FROM users WHERE email = :email LIMIT 1');
 $stmt->execute([':email' => $email]);
 $user = $stmt->fetch();
 
 if (!$user || !password_verify($password, $user['password_hash'])) {
-    json_response(['error' => 'Invalid username/email or password'], 401);
+    json_response(['error' => 'Invalid email or password'], 401);
 }
 
 $pdo->prepare('UPDATE users SET last_login_at = NOW() WHERE id = ?')->execute([$user['id']]);
